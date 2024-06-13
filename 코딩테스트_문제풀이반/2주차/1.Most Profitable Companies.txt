@@ -1,0 +1,6 @@
+select company, profits as profit
+from (
+    select company, profits,
+    rank() over(order by profits desc) as profit_rank
+    from forbes_global_2010_2014) pr
+where pr.profit_rank between 1 and 3;

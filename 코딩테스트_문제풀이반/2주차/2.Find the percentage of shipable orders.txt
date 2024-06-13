@@ -1,0 +1,5 @@
+select count(address) / count(o.id) * 100 as percent_shipable
+from orders o
+left outer join
+customers c
+on o.cust_id = c.id;
