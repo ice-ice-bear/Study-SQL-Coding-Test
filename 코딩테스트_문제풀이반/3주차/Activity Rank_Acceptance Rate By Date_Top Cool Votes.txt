@@ -1,0 +1,29 @@
+#문제1 Activity Rank
+select from_user, count(from_user) as total_emails,
+rank() over(order by count(*) desc, from_user asc) as rankings
+from google_gmail_emails
+group by from_user
+
+# 문제2 Acceptance Rate By Date
+select accepted.date, accepted_count/total_count
+from
+(select a.date, count(*) as accepted_count
+from fb_friend_requests a
+inner join
+fb_friend_requests b
+on a.user_id_sender = b.user_id_sender
+where a.action = 'sent' and b.action = 'accepted'
+group by a.date) accepted
+inner join
+(select date, count(*) as total_count
+from fb_friend_requests
+where action = 'sent'
+group by date) total
+on accepted.date  = total.date
+
+#문제3 Top Cool Votes
+select business_name, review_text
+from yelp_reviews
+where cool = (
+select max(cool) as cool
+from yelp_reviews)
