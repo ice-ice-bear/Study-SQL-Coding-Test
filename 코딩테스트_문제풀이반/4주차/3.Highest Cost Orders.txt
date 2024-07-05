@@ -1,0 +1,6 @@
+select c.first_name, order_date, sum(total_order_cost) as total_cost
+from customers c inner join orders o
+where c.id = o.cust_id
+and order_date between '2019-02-01' and '2019-05-01'
+group by order_date, first_name
+limit 1;

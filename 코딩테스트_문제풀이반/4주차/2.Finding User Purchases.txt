@@ -1,0 +1,18 @@
+select a.user_id
+from
+(
+    select 
+        user_id, created_at,
+        row_number() over (partition by user_id order by created_at, item) as order_num
+    from amazon_transactions
+) a
+inner join
+(
+    select 
+        user_id, created_at,
+        row_number() over (partition by user_id order by created_at, item) as order_num
+    from amazon_transactions
+) b
+on a.user_id = b.user_id
+and a.order_num = 1 and b.order_num = 2
+where datediff(b.created_at, a.created_at) <= 7;

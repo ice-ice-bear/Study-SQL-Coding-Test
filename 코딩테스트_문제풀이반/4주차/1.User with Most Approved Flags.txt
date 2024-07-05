@@ -1,0 +1,9 @@
+select username
+from (
+select concat(a.user_firstname, ' ', a.user_lastname) as username, 
+count(distinct video_id) as distinct_approved
+from user_flags a inner join flag_review b
+on a.flag_id = b.flag_id
+where b.reviewed_by_yt = 1 and b.reviewed_outcome = 'APPROVED'
+group by a.user_firstname) d
+where distinct_approved = 2 
