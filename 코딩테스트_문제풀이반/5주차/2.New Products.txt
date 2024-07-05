@@ -1,0 +1,10 @@
+select company_name, sum(t_launch) as total_launch
+from(
+select *,
+    case when year = 2019 then -(year_launch)
+        when year = 2020 then year_launch end as t_launch 
+    from(
+        select year, company_name, count(company_name) as year_launch
+        from car_launches
+        group by year, company_name) a) b
+group by company_name;

@@ -1,0 +1,8 @@
+select inspection_year as 'YEAR', count(inspection_year) as n_inspections
+from (
+    select violation_id, year(inspection_date) as inspection_year
+    from sf_restaurant_health_violations
+    where business_name = 'Roxanne Cafe'
+    ) a
+group by inspection_year
+order by inspection_year;
