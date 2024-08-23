@@ -1,0 +1,25 @@
+select date, consumption
+from(
+    select *,
+    rank() over(order by consumption desc) as c_rank
+    from(
+        select date, sum(consumption) as consumption
+        from(
+            select * 
+            from fb_eu_energy
+            
+            union all
+            
+            select * 
+            from fb_asia_energy
+            
+            union all
+            
+            select * 
+            from fb_na_energy
+            ) a
+        group by date
+        order by consumption desc) b
+        ) c
+where c_rank = 1
+

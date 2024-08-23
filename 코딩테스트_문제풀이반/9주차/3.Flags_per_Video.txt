@@ -1,0 +1,9 @@
+select video_id, count(distinct full_name)
+from(
+    select 
+    ifnull(concat(user_firstname, " ", user_lastname), 0) as full_name, 
+    video_id, flag_id
+    from user_flags
+    where flag_id is not null
+    ) a
+group by video_id

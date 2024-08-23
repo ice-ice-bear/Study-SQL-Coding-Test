@@ -1,0 +1,8 @@
+select first_name, target
+from(
+    select first_name, target,
+    rank() over(order by target desc) as t_rank
+    from salesforce_employees
+    where manager_id = 13) a
+where t_rank = 1
+;
